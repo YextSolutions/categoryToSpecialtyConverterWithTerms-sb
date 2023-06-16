@@ -55,7 +55,7 @@
             "Related Reasons for Visit"
           ]
         },
-        "plugin": "categoryToSpecialtyWithTerms",
+        "plugin": "sandboxCategoryToSpecialtyWithTerms",
         "function": "sandboxCategoryToSpecialty"
       }
     },
