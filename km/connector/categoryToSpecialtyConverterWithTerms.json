@@ -124,9 +124,5 @@
       "subfieldPath": [],
       "clearValueIfBlank": false
     }
-  ],
-  "comprehensiveModeConfig": {
-    "comprehensiveSet": "ENTITIES_CREATED_BY_THIS_CONNECTOR",
-    "actionOnMissingEntities": "DELETE"
-  }
+  ]
 }
