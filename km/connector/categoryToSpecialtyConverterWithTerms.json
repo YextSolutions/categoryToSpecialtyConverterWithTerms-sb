@@ -1,128 +1,134 @@
 {
-  "$id": "categoryToSpecialtyConverterWithTerms",
-  "$schema": "https://schema.yext.com/config/km/connector/v3",
-  "displayName": "Category to Specialty Converter With Terms",
-  "entityType": "healthcareProfessional",
-  "source": {
-    "sourceConfig": {
-      "nativeSourceConfig": {
-        "source": "yextAccount",
-        "operation": "fetchEntities",
-        "inputs": {
-          "apiKey": "${{apiKey}}",
-          "entityType": "healthcareProfessional",
-          "environment": "sandbox",
-          "vParam": "20230531"
+    "$id": "categoryToSpecialtyConverterWithTerms",
+    "$schema": "https://schema.yext.com/config/km/connector/v4",
+    "displayName": "Category to Specialty Converter With Terms",
+    "entityTypes": [
+        "healthcareProfessional"
+    ],
+    "source": {
+        "sourceConfig": {
+            "nativeSourceConfig": {
+                "source": "yextAccount",
+                "operation": "fetchEntities",
+                "inputs": {
+                    "apiKey": "${{apiKey}}",
+                    "entityType": "healthcareProfessional",
+                    "environment": "sandbox",
+                    "vParam": "20230531"
+                }
+            }
+        },
+        "selectors": [
+            {
+                "type": "JSON",
+                "header": "Entity ID",
+                "path": "meta.id"
+            },
+            {
+                "type": "JSON",
+                "header": "Related Specialties",
+                "path": "categoryIds"
+            },
+            {
+                "type": "JSON",
+                "header": "Related Procedures",
+                "path": "categoryIds"
+            },
+            {
+                "type": "JSON",
+                "header": "Related Conditions Treated",
+                "path": "categoryIds"
+            },
+            {
+                "type": "JSON",
+                "header": "Related Reasons for Visit",
+                "path": "categoryIds"
+            }
+        ]
+    },
+    "transforms": [
+        {
+            "function": {
+                "inputHeaders": {
+                    "headers": [
+                        "Related Specialties",
+                        "Related Procedures",
+                        "Related Conditions Treated",
+                        "Related Reasons for Visit"
+                    ]
+                },
+                "plugin": "sandboxCategoryToSpecialtyWithTerms",
+                "function": "sandboxCategoryToSpecialty"
+            }
+        },
+        {
+            "function": {
+                "inputHeaders": {
+                    "headers": [
+                        "Related Procedures"
+                    ]
+                },
+                "plugin": "categoryToSpecialtyWithTerms",
+                "function": "specialtyToProcedure"
+            }
+        },
+        {
+            "function": {
+                "inputHeaders": {
+                    "headers": [
+                        "Related Conditions Treated"
+                    ]
+                },
+                "plugin": "categoryToSpecialtyWithTerms",
+                "function": "specialtyToCondition"
+            }
+        },
+        {
+            "function": {
+                "inputHeaders": {
+                    "headers": [
+                        "Related Reasons for Visit"
+                    ]
+                },
+                "plugin": "categoryToSpecialtyWithTerms",
+                "function": "specialtyToReason"
+            }
         }
-      }
-    },
-    "selectors": [
-      {
-        "type": "JSON",
-        "header": "Entity ID",
-        "path": "meta.id"
-      },
-      {
-        "type": "JSON",
-        "header": "Related Specialties",
-        "path": "categoryIds"
-      },
-      {
-        "type": "JSON",
-        "header": "Related Procedures",
-        "path": "categoryIds"
-      },
-      {
-        "type": "JSON",
-        "header": "Related Conditions Treated",
-        "path": "categoryIds"
-      },
-      {
-        "type": "JSON",
-        "header": "Related Reasons for Visit",
-        "path": "categoryIds"
-      }
-    ]
-  },
-  "transforms": [
-    {
-      "function": {
-        "inputHeaders": {
-          "headers": [
-            "Related Specialties",
-            "Related Procedures",
-            "Related Conditions Treated",
-            "Related Reasons for Visit"
-          ]
+    ],
+    "mappings": [
+        {
+            "header": "Related Procedures",
+            "field": "taxonomy_relatedProcedures",
+            "subfieldPath": [],
+            "clearValueIfBlank": false
         },
-        "plugin": "sandboxCategoryToSpecialtyWithTerms",
-        "function": "sandboxCategoryToSpecialty"
-      }
-    },
-    {
-      "function": {
-        "inputHeaders": {
-          "headers": [
-            "Related Procedures"
-          ]
+        {
+            "header": "Related Conditions Treated",
+            "field": "taxonomy_relatedConditions",
+            "subfieldPath": [],
+            "clearValueIfBlank": false
         },
-        "plugin": "categoryToSpecialtyWithTerms",
-        "function": "specialtyToProcedure"
-      }
-    },
-    {
-      "function": {
-        "inputHeaders": {
-          "headers": [
-            "Related Conditions Treated"
-          ]
+        {
+            "header": "Related Reasons for Visit",
+            "field": "taxonomy_relatedReasonsForVisit",
+            "subfieldPath": [],
+            "clearValueIfBlank": false
         },
-        "plugin": "categoryToSpecialtyWithTerms",
-        "function": "specialtyToCondition"
-      }
-    },
-    {
-      "function": {
-        "inputHeaders": {
-          "headers": [
-            "Related Reasons for Visit"
-          ]
+        {
+            "header": "Related Specialties",
+            "field": "taxonomy_relatedSpecialties",
+            "subfieldPath": [],
+            "clearValueIfBlank": false
         },
-        "plugin": "categoryToSpecialtyWithTerms",
-        "function": "specialtyToReason"
-      }
+        {
+            "header": "Entity ID",
+            "field": "entityId",
+            "subfieldPath": [],
+            "clearValueIfBlank": false
+        }
+    ],
+    "comprehensiveModeConfig": {
+        "comprehensiveSet": "ENTITIES_CREATED_BY_THIS_CONNECTOR",
+        "actionOnMissingEntities": "DELETE"
     }
-  ],
-  "mappings": [
-    {
-      "header": "Related Procedures",
-      "field": "taxonomy_relatedProcedures",
-      "subfieldPath": [],
-      "clearValueIfBlank": false
-    },
-    {
-      "header": "Related Conditions Treated",
-      "field": "taxonomy_relatedConditions",
-      "subfieldPath": [],
-      "clearValueIfBlank": false
-    },
-    {
-      "header": "Related Reasons for Visit",
-      "field": "taxonomy_relatedReasonsForVisit",
-      "subfieldPath": [],
-      "clearValueIfBlank": false
-    },
-    {
-      "header": "Related Specialties",
-      "field": "taxonomy_relatedSpecialties",
-      "subfieldPath": [],
-      "clearValueIfBlank": false
-    },
-    {
-      "header": "Entity ID",
-      "field": "entityId",
-      "subfieldPath": [],
-      "clearValueIfBlank": false
-    }
-  ]
 }
