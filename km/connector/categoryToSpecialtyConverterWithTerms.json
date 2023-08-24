@@ -68,7 +68,7 @@
                         "Related Procedures"
                     ]
                 },
-                "plugin": "categoryToSpecialtyWithTerms",
+                "plugin": "sandboxCategoryToSpecialtyWithTerms",
                 "function": "specialtyToProcedure"
             }
         },
@@ -79,7 +79,7 @@
                         "Related Conditions Treated"
                     ]
                 },
-                "plugin": "categoryToSpecialtyWithTerms",
+                "plugin": "sandboxCategoryToSpecialtyWithTerms",
                 "function": "specialtyToCondition"
             }
         },
@@ -90,7 +90,7 @@
                         "Related Reasons for Visit"
                     ]
                 },
-                "plugin": "categoryToSpecialtyWithTerms",
+                "plugin": "sandboxCategoryToSpecialtyWithTerms",
                 "function": "specialtyToReason"
             }
         }
